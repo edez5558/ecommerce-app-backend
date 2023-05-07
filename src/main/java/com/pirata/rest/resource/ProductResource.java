@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pirata.rest.model.Product;
+import com.pirata.rest.model.User;
 import com.pirata.rest.service.ProductService;
 
 @RestController
@@ -34,6 +36,22 @@ public class ProductResource {
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @GetMapping("/get/{id}/user")
+    private ResponseEntity<Optional<User>> getUser(@PathVariable ("id") Long id){
+        return ResponseEntity.ok(productService.getUserById(id));
+    }
+
+    @GetMapping("/get/{id}/user/name")
+    private ResponseEntity<Optional<String>> getUserName(@PathVariable ("id") Long id){
+        return ResponseEntity.ok(productService.getUserNameById(id));
+    }
+
+    @PostMapping("/update/{id}")
+    private ResponseEntity<Void> updateUrl(@PathVariable ("id") Long id, @RequestBody Product product){
+        //productService.updateProductById(id,product);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/list")
