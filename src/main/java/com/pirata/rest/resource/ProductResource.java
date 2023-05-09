@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.rpc.context.AttributeContext.Response;
 import com.pirata.rest.model.Product;
 import com.pirata.rest.model.User;
+import com.pirata.rest.request.ModifyRequest;
 import com.pirata.rest.service.ProductService;
 
 @RestController
@@ -32,7 +33,7 @@ public class ProductResource {
         Product tmp = productService.create(product);
 
         try{
-            return ResponseEntity.created(new URI("/api/product/" + tmp.getId())).body(tmp);
+            return ResponseEntity.ok(tmp);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -48,12 +49,6 @@ public class ProductResource {
         return ResponseEntity.ok(productService.getUserNameById(id));
     }
 
-    @PostMapping("/update/{id}")
-    private ResponseEntity<Void> updateUrl(@PathVariable ("id") Long id, @RequestBody Product product){
-        //productService.updateProductById(id,product);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/list")
     private ResponseEntity<List<Product>> listAllProduct(){
         return ResponseEntity.ok(productService.getAllProduct());
@@ -65,8 +60,14 @@ public class ProductResource {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/update")
+    private ResponseEntity<String> updateProduct(@RequestBody ModifyRequest request){
+        return ResponseEntity.ok(productService.updateProduct(request));
+    }
+
     @GetMapping(value = "/get/{id}")
     private ResponseEntity<Optional<Product>> listAllProduct(@PathVariable ("id") Long id){
         return ResponseEntity.ok(productService.findById(id));
     }
+
 }

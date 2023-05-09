@@ -15,11 +15,13 @@ import org.springframework.web.servlet.function.RenderingResponse;
 
 import com.pirata.rest.exceptions.UserExistException;
 import com.pirata.rest.model.User;
+import com.pirata.rest.request.SessionRequest;
 import com.pirata.rest.service.UserService;
 
 @RestController
 @RequestMapping("api/user")
 public class UserResource {
+
     @Autowired
     private UserService userService;
 
@@ -28,30 +30,18 @@ public class UserResource {
         return new ResponseEntity<String>(userService.addUser(user),HttpStatus.CREATED);
     }
 
-    /* 
-    @RequestMapping(
-        value = "/save",
-        method = RequestMethod.POST,
-        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    private ResponseEntity<String> add(User user){
-        return new ResponseEntity<String>(userService.addUser(user),HttpStatus.CREATED);
-    }
-    */
-
-
     @PostMapping("/login")
     private ResponseEntity<String> authenticate(@RequestBody User user){
         return new ResponseEntity<String>(userService.authenticateUser(user),HttpStatus.OK);
     }
 
     @PostMapping("/session/new")
-    private ResponseEntity<Optional<String>> sessionCreate(@RequestBody User user){
-        return new ResponseEntity<Optional<String>>(userService.sessionCreate(user),HttpStatus.OK);
+    private ResponseEntity<Optional<SessionRequest>> sessionCreate(@RequestBody User user){
+        return new ResponseEntity<Optional<SessionRequest>>(userService.sessionCreate(user),HttpStatus.OK);
     }
 
     @PostMapping("/session/verify")
-    private ResponseEntity<Optional<String>> sessionVerify(@RequestBody User user){
-        return new ResponseEntity<Optional<String>>(userService.sessionVerify(user),HttpStatus.OK);
+    private ResponseEntity<Optional<User>> sessionVerify(@RequestBody SessionRequest session){
+        return new ResponseEntity<Optional<User>>(userService.sessionVerify(session),HttpStatus.OK);
     }
 }

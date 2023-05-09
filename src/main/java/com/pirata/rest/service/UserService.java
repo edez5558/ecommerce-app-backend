@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.pirata.rest.exceptions.UserExistException;
 import com.pirata.rest.model.User;
 import com.pirata.rest.repository.UserRepository;
+import com.pirata.rest.request.SessionRequest;
 
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -43,7 +43,7 @@ public class UserService {
 		throw new UserExistException("El username esta en uso");
 	}
 	
-	private Boolean checkPassword(User user){
+	private long checkPassword(User user){
 		Optional<User> tmp = findByUsername(user.getUsername());
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
@@ -51,44 +51,58 @@ public class UserService {
 			User dbUser = tmp.get();
 
 			if(bcrypt.matches(user.getPassword(),dbUser.getPassword())){
-				return true;
+				return dbUser.getId();
 			}else
-				return false;
+				return -1;
 		}
 
-		return false;
+		return -1;
 	}
 
 	public String authenticateUser(User user){
-		if(checkPassword(user)){
+		if(checkPassword(user) != -1){
 			return "Authenticated";
 		}
 
 		throw new UserExistException("Not Authenticated");
 	}
 
-	public Optional<String> sessionCreate(User user){
-		if(checkPassword(user)){
+	public Optional<SessionRequest> sessionCreate(User user){
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		long userId = checkPassword(user);
+
+		if(userId != -1){
 			String sessionId = UUID.randomUUID().toString();
 
-			userRepository.updateSessionIdById(user.getId(), sessionId);
+			String sessionIdEncrypted = bcrypt.encode(sessionId);
 
-			return Optional.of(sessionId);
+			userRepository.updateSessionIdById(userId, sessionIdEncrypted);
+
+			return Optional.of(new SessionRequest(userId,sessionId));
 		}
 
 		return Optional.ofNullable(null);
 	}
 
-	public Optional<String> sessionVerify(User user){
-		Optional<String> sessionIdDb = userRepository.selectSessionId(user.getId());
+	public Optional<User> sessionVerify(SessionRequest session){
+		System.out.println(session.getSessionId() + " : " + session.getId());
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+		Optional<String> sessionIdDb = userRepository.selectSessionId(session.getId());
 
 		if(!sessionIdDb.isPresent()) return Optional.ofNullable(null);
 
-		String sessionId = sessionIdDb.get();
+		String sessionID = sessionIdDb.get();
 
-		if(sessionId == user.getSessionId())
-			return Optional.of("verify");
+		if(sessionID.isEmpty()) return Optional.ofNullable(null);
+
+
+
+		if(!bcrypt.matches(session.getSessionId(), sessionID))
+			return Optional.ofNullable(null);
+
+		User userDB = userRepository.findById(session.getId()).get();
+
 		
-		return Optional.of("expired");
+		return Optional.of(userDB);
 	}
 }
