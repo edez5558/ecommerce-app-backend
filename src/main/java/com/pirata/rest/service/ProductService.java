@@ -91,6 +91,8 @@ public class ProductService {
         if(!productTmp.isPresent())
             return "El producto no existe";
         
+        productTmp.get().setClient(userTmp.get());
+        
         productRespository.save(product);
         return "Modificacion completada";
     }
