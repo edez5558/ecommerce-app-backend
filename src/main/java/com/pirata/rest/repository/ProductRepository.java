@@ -30,6 +30,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     @Query(value = "SELECT c.username FROM Product as p INNER JOIN User as c ON p.client = c.id WHERE p.id = ?1")
     Optional<String> selectUserNameById(Long id);
 
+    @Modifying (clearAutomatically = true)
+    @Transactional
     @Query(value = "UPDATE Product set stock = ?1 where id = ?2")
     void updateStockById(long stock, Long id);
 

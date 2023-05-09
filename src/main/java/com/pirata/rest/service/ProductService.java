@@ -55,7 +55,7 @@ public class ProductService {
     }
 
     public String sellerByUserId(BuyRequest request){
-        Optional<User> userTmp = userService.sessionVerify(new SessionRequest(request.getClientdId(), request.getSessionId()));
+        Optional<User> userTmp = userService.sessionVerify(new SessionRequest(request.getClientId(), request.getSessionId()));
 
         if(!userTmp.isPresent())
             return "No se ha podido completar la compra";

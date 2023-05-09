@@ -1,7 +1,7 @@
 package com.pirata.rest.request;
 
 public class BuyRequest {
-    private Long clientdId;
+    private Long clientId;
     private Long productId;
     private String sessionId;
     private long amount;
@@ -12,11 +12,11 @@ public class BuyRequest {
     public void setAmount(long amount) {
         this.amount = amount;
     }
-    public Long getClientdId() {
-        return clientdId;
+    public Long getClientId() {
+        return clientId;
     }
-    public void setClientdId(Long clientdId) {
-        this.clientdId = clientdId;
+    public void setClientId(Long clientdId) {
+        this.clientId = clientdId;
     }
     public Long getProductId() {
         return productId;

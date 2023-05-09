@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.rpc.context.AttributeContext.Response;
 import com.pirata.rest.model.Product;
 import com.pirata.rest.model.User;
+import com.pirata.rest.request.BuyRequest;
 import com.pirata.rest.request.ModifyRequest;
 import com.pirata.rest.service.ProductService;
 
@@ -68,6 +69,11 @@ public class ProductResource {
     @GetMapping(value = "/get/{id}")
     private ResponseEntity<Optional<Product>> listAllProduct(@PathVariable ("id") Long id){
         return ResponseEntity.ok(productService.findById(id));
+    }
+
+    @PostMapping("/buy")
+    private ResponseEntity<String> buyProduct(@RequestBody BuyRequest request){
+        return ResponseEntity.ok(productService.sellerByUserId(request));
     }
 
 }
