@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.pirata.rest.exceptions.UserExistException;
+import com.pirata.rest.exceptions.UserException;
 import com.pirata.rest.model.User;
 import com.pirata.rest.repository.UserRepository;
 import com.pirata.rest.request.SessionRequest;
@@ -40,7 +40,7 @@ public class UserService {
 			return newuser.getUsername();
 		}
 
-		throw new UserExistException("El username esta en uso");
+		throw new UserException("El username esta en uso");
 	}
 	
 	private long checkPassword(User user){
@@ -64,7 +64,7 @@ public class UserService {
 			return "Authenticated";
 		}
 
-		throw new UserExistException("Not Authenticated");
+		throw new UserException("Not Authenticated");
 	}
 
 	public Optional<SessionRequest> sessionCreate(User user){

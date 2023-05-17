@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pirata.rest.exceptions.ProductException;
+import com.pirata.rest.exceptions.UserException;
 import com.pirata.rest.model.Product;
 import com.pirata.rest.model.User;
 import com.pirata.rest.repository.ProductRepository;
-import com.pirata.rest.repository.UserRepository;
 import com.pirata.rest.request.BuyRequest;
 import com.pirata.rest.request.ModifyRequest;
 import com.pirata.rest.request.SessionRequest;
@@ -58,19 +59,19 @@ public class ProductService {
         Optional<User> userTmp = userService.sessionVerify(new SessionRequest(request.getClientId(), request.getSessionId()));
 
         if(!userTmp.isPresent())
-            return "No se ha podido completar la compra";
+            throw new UserException("No se ha podido completar la compra");
         
         Optional<Product> productTmp = productRespository.findById(request.getProductId());
 
         if(!productTmp.isPresent())
-            return "El producto no existe";
+            throw new ProductException("El producto no existe");
         
         Product product = productTmp.get();
         
         Long finalStock = product.getStock() - request.getAmount();
 
         if(finalStock < 0)
-            return "Sin disponibilidad";
+            throw new ProductException("Sin disponibilidad");
         
         productRespository.updateStockById(finalStock, request.getProductId());
     
@@ -84,16 +85,17 @@ public class ProductService {
         Optional<User> userTmp = userService.sessionVerify(new SessionRequest(request.getId(), request.getSessionId()));
 
         if(!userTmp.isPresent())
-            return "No se ha podido verificar la cuenta";
+            throw new UserException("No se ha podido verificar la cuenta");
         
         Optional<Product> productTmp = productRespository.findById(product.getId());
 
         if(!productTmp.isPresent())
-            return "El producto no existe";
+            throw new ProductException("El producto no existe");
         
-        productTmp.get().setClient(userTmp.get());
+        product.setClient(userTmp.get());
         
         productRespository.save(product);
+
         return "Modificacion completada";
     }
 }

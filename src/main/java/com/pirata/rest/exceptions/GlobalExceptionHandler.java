@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(UserExistException.class) 
-    public String expectionHandler(UserExistException unfe){
-        return "UserExistException:" + unfe.getMessage();
+    @ExceptionHandler(UserException.class) 
+    public String expectionHandler(UserException unfe){
+        return "UserException:" + unfe.getMessage();
+    }
+
+    @ExceptionHandler(ProductException.class) 
+    public String expectionHandler(ProductException unfe){
+        return "ProductException:" + unfe.getMessage();
     }
 }

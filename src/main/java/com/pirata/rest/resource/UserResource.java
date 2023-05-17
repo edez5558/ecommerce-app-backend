@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.function.RenderingResponse;
 
-import com.pirata.rest.exceptions.UserExistException;
+import com.pirata.rest.exceptions.UserException;
 import com.pirata.rest.model.User;
 import com.pirata.rest.request.SessionRequest;
 import com.pirata.rest.service.UserService;
