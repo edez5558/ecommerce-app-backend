@@ -1,0 +1,35 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway 
+metadata:
+  name: api-gateway
+spec:
+  servers:
+    - port: 
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+      - pirata.20.88.189.150.nip.io
+  selector:
+    istio: ingressgateway 
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-virtual
+spec:
+  hosts:
+    - pirata.20.88.189.150.nip.io
+  gateways:
+    - api-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /api
+    route:
+    - destination:
+        port:
+          number: 80
+        host: items-api-svc
+

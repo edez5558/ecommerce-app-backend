@@ -36,3 +36,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Microservices ###
+microservices/loader/node_modules
+microservices/loader/uploads
+microservices/loader/.env
+microservices/loader/deploy.yaml
