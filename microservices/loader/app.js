@@ -2,11 +2,15 @@ const express = require('express');
 const multer = require('multer');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const fs = require('fs');
+const crypto = require('crypto');
+const cors = require('cors');
 
 //require('dotenv').config();
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
+
+app.use(cors());
 
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = 'images';
@@ -19,7 +23,14 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     const containerClient = blobServiceClient.getContainerClient(containerName);
 
-    const blobName = file.originalname;
+    const extension = file.originalname.substring(file.originalname.lastIndexOf("."));
+
+    let current_data = (new Date()).valueOf().toString();
+    let random = Math.random().toString();
+
+    let randomName = crypto.createHash('sha1').update(current_data + random).digest('hex');
+
+    const blobName = randomName + extension;
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
     const stream = fs.createReadStream(file.path);

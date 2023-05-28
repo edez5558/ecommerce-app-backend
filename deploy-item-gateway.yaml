@@ -32,4 +32,12 @@ spec:
         port:
           number: 80
         host: items-api-svc
+  - match:
+    - uri:
+        prefix: /upload
+    route:
+    - destination:
+        port:
+            number: 80
+        host: uploader-api-svc
 
