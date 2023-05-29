@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-api
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: ai-api
+  template:
+    metadata:
+      labels:
+        app: ai-api
+    spec:
+      containers:
+      - name: ai-api
+        image: edez58/pirata-classification
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-api-svc
+spec:
+  selector:
+    app: ai-api 
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000

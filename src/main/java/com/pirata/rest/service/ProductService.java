@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.pirata.rest.exceptions.ProductException;
@@ -97,5 +101,27 @@ public class ProductService {
         productRespository.save(product);
 
         return "Modificacion completada";
+    }
+
+    public Page<Product> getProduct(int pageNumber,int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("id").descending());
+        return productRespository.findAll(pageable);
+    }
+
+    public Page<Product> getProductSelect(int pageNumber,int pageSize,Boolean peluche){
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,Sort.by("id").descending());
+
+        if(peluche)
+            return productRespository.findByPelucheTrue(pageable);
+        else
+            return productRespository.findByPelucheFalse(pageable);
+    }
+
+    public List<Product> getProductPrincipal(){
+        return productRespository.findRandomPrincipal();
+    }
+
+    public List<Product> getProductRandom(){
+        return productRespository.findRandomProducts();
     }
 }

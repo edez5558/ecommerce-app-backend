@@ -24,6 +24,7 @@ public class Product {
     private String extraDescription;
     private String imageUrl;
     private double price;
+    private Boolean peluche;
 
     @Column(name = "stock_available")
     private long stock;
@@ -33,6 +34,16 @@ public class Product {
     @JoinColumn(name = "client_id")
     @JsonBackReference
     private User client;
+
+
+
+    public Boolean getPeluche() {
+        return peluche;
+    }
+
+    public void setPeluche(Boolean peluche) {
+        this.peluche = peluche;
+    }
 
     public long getStock() {
         return stock;

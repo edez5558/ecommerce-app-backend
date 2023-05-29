@@ -42,3 +42,6 @@ microservices/loader/node_modules
 microservices/loader/uploads
 microservices/loader/.env
 microservices/loader/deploy.yaml
+
+microservices/ai/old-model
+microservices/ai/venv

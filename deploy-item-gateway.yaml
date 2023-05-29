@@ -24,6 +24,11 @@ spec:
   gateways:
     - api-gateway
   http:
+  - route:
+    - destination:
+        port:
+          number: 80
+        host: front-svc
   - match:
     - uri:
         prefix: /api
@@ -40,4 +45,11 @@ spec:
         port:
             number: 80
         host: uploader-api-svc
-
+  - match:
+    - uri:
+        prefix: /predict
+    route:
+    - destination:
+        port:
+            number: 80
+        host: ai-api-svc

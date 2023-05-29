@@ -31,57 +31,53 @@ public class UserService {
 		Optional<User> tmp = findByUsername(user.getUsername());
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
-		if(!tmp.isPresent()){
-			String encryptedPassword = bcrypt.encode(user.getPassword());
-			user.setPassword(encryptedPassword);
-			User newuser = userRepository.save(user);
+		if(tmp.isPresent())
+			throw new UserException("El username esta en uso");
 
-			System.out.println(newuser.getUsername());
-			return newuser.getUsername();
-		}
+		String encryptedPassword = bcrypt.encode(user.getPassword());
+		user.setPassword(encryptedPassword);
+		User newuser = userRepository.save(user);
 
-		throw new UserException("El username esta en uso");
+		System.out.println(newuser.getUsername());
+		return newuser.getUsername();
 	}
 	
 	private long checkPassword(User user){
 		Optional<User> tmp = findByUsername(user.getUsername());
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
-		if(tmp.isPresent()){
-			User dbUser = tmp.get();
+		if(!tmp.isPresent())
+			return -1;
 
-			if(bcrypt.matches(user.getPassword(),dbUser.getPassword())){
-				return dbUser.getId();
-			}else
-				return -1;
-		}
+		User dbUser = tmp.get();
 
-		return -1;
+		if(bcrypt.matches(user.getPassword(),dbUser.getPassword()))
+			return dbUser.getId();
+		else
+			return -1;
 	}
 
 	public String authenticateUser(User user){
-		if(checkPassword(user) != -1){
-			return "Authenticated";
-		}
+		if(checkPassword(user) == -1)
+			throw new UserException("Not Authenticated");
 
-		throw new UserException("Not Authenticated");
+		return "Authenticated";
 	}
 
 	public Optional<SessionRequest> sessionCreate(User user){
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		long userId = checkPassword(user);
 
-		if(userId != -1){
-			String sessionId = UUID.randomUUID().toString();
+		if(userId == -1)
+			return Optional.ofNullable(null);
 
-			String sessionIdEncrypted = bcrypt.encode(sessionId);
+		String sessionId = UUID.randomUUID().toString();
 
-			userRepository.updateSessionIdById(userId, sessionIdEncrypted);
+		String sessionIdEncrypted = bcrypt.encode(sessionId);
 
-			return Optional.of(new SessionRequest(userId,sessionId));
-		}
+		userRepository.updateSessionIdById(userId, sessionIdEncrypted);
 
-		return Optional.ofNullable(null);
+		return Optional.of(new SessionRequest(userId,sessionId));
 	}
 
 	public Optional<User> sessionVerify(SessionRequest session){
