@@ -1,0 +1,37 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway 
+metadata:
+  name: front-gateway
+spec:
+  servers:
+    - port: 
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+      - piratafront.20.88.189.150.nip.io
+  selector:
+    istio: ingressgateway 
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: front-virtual
+spec:
+  hosts:
+    - piratafront.20.88.189.150.nip.io
+  gateways:
+    - front-gateway
+  http:
+  - route:
+    - destination:
+        port:
+          number: 80
+        host: front-svc
+      weight: 80 
+    - destination:
+        port:
+          number: 80
+        host: front-v2-svc
+      weight: 20

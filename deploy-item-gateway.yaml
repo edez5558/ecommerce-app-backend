@@ -24,11 +24,6 @@ spec:
   gateways:
     - api-gateway
   http:
-  - route:
-    - destination:
-        port:
-          number: 80
-        host: front-svc
   - match:
     - uri:
         prefix: /api
