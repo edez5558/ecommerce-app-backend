@@ -1,10 +1,19 @@
-# Proyecto Final
+# Proyecto ecommerce
 
 Edmundo Gomez Alvarez
 
 ## URL
 
-http://piratafront.20.88.189.150.nip.io/
+(Link no funcionar se acabo los creditos de la puebra gratiuta de Azure ) http://piratafront.20.88.189.150.nip.io/ 
+
+### Usando la pagina
+
+[![Uso de la aplicacion](https://img.youtube.com/vi/Exd4EkSkOFw/0.jpg)](https://www.youtube.com/watch?v=Exd4EkSkOFw)
+
+### Cheekymonkey
+
+[![Cheekymonkey](https://img.youtube.com/vi/S0AM7Gs59F8/0.jpg)](https://www.youtube.com/watch?v=S0AM7Gs59F8)
+
 
 ## Backend
 
@@ -74,14 +83,5 @@ Azure también ofrece una amplia gama de servicios para supervisar y administrar
 
 ![Captura de pantalla 2023-05-29 042636](https://github.com/edez5558/ecommerce-app-backend/assets/122659695/30437410-1909-449b-b6a0-1d013d689fde)
 
-## Puebras
-
-### Usando la pagina
-
-[![Uso de la aplicacion](https://img.youtube.com/vi/Exd4EkSkOFw/0.jpg)](https://www.youtube.com/watch?v=Exd4EkSkOFw)
-
-### Cheekymonkey
-
-[![Cheekymonkey](https://img.youtube.com/vi/S0AM7Gs59F8/0.jpg)](https://www.youtube.com/watch?v=S0AM7Gs59F8)
 
 
