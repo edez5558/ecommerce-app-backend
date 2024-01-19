@@ -4,7 +4,7 @@ Edmundo Gomez Alvarez
 
 ## URL
 
-(Link no funcionar se acabo los creditos de la puebra gratiuta de Azure ) http://piratafront.20.88.189.150.nip.io/ 
+(Link no funciona se acabo los creditos de la puebra gratiuta de Azure ) http://piratafront.20.88.189.150.nip.io/ 
 
 ### Usando la pagina
 
